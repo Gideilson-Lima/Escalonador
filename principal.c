@@ -18,9 +18,10 @@ int main(int argc, char *argv[]){
 		printf("\n------------------\n");
 		/* escalona o sistema */
 		escalonar(mat,l,c);
-		show(mat,l,c);
 		escalonarR(mat,l,c);
+		printf("------------------\n");
 		finaliza(mat,l,c);
+		printf("\n------------------\n");
 		/* exibe o sistema escalonado */
 		show(mat,l,c);
 	}

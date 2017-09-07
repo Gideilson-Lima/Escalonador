@@ -4,12 +4,23 @@ fr fator(fr piv, fr pret){
 	fr f;
 	f = divi(pret,piv);
 		
+	if(f.den<0&&f.num>0){
+		f = mult(f,new(-1,-1));
+	}
+	
 	if(mult(f,piv).num == pret.num){
 		f = mult(f,new(-1,1));
 	}
 	
-		
 	return f;	
+}
+
+fr verificado(fr t){
+	if(t.den<0&&t.num>0){
+		t = mult(t,new(-1,-1));
+	}
+	
+	return t;
 }
 
 fr *vetor(){
@@ -43,30 +54,36 @@ void entrada(fr **m, int l, int c){
 
 void escalonar(fr **m, int l, int c){
 	for(int i=0;i<(l-1);i++){
-			for(int v=i;v<(l-1);v++){
+		for(int v=i;v<(l-1);v++){
+			if(m[v+1][i].num!=0){
 				fr f1 = fator(m[i][i],m[v+1][i]);
 				mostra(1,f1);
 				printf("E: %d,%d",i+1,v+2);
 				printf("\n");				
 				for(int j=0;j<c;j++){
-					m[v+1][j] = soma(m[v+1][j], mult(f1,m[i][j]));
+					m[v+1][j] = soma(m[v+1][j], simplifica(mult(f1,m[i][j])));
+					m[v+1][j] = verificado(m[v+1][j]);
 				}
 			}
 		}
+	}
 }
 
 void escalonarR(fr **m, int l, int c){
 	for(int i=1;i<l;i++){
-			for(int v=i;v>0;v--){
+		for(int v=i;v>0;v--){
+			if(m[v-1][i].num!=0){
 				fr f1 = fator(m[i][i],m[v-1][i]);
 				mostra(1,f1);
-				printf("E: %d,%d",i,v-1);
+				printf("E: %d,%d",i+1,v);
 				printf("\n");				
 				for(int j=v;j<c;j++){
-					m[v-1][j] = soma(m[v-1][j], mult(f1,m[i][j]));
+					m[v-1][j] = soma(m[v-1][j], simplifica(mult(f1,m[i][j])));
+					m[v-1][j] = verificado(m[v-1][j]);
 				}
 			}
 		}
+	}
 }
 
 void finaliza(fr **m, int l, int c){
@@ -84,26 +101,26 @@ void finaliza(fr **m, int l, int c){
 void show(fr **m, int l, int c){
 	char var = 97;
 	for(int i=0;i<l;i++){//---------mostra matrix
-			for(int j=0;j<c;j++){
-				if(m[i][j].num!=0){
-					mostra(1,m[i][j]);
-				}else
-					printf("  ");
+		for(int j=0;j<c;j++){
+			if(m[i][j].num!=0){
+				mostra(1,m[i][j]);
+			}else
+				printf("  ");
 
-				if(j<c-1&&m[i][j].num!=0)
-					printf(". %c",var);
-				else
-					printf("   ");
+			if(j<c-1&&m[i][j].num!=0)
+				printf(". %c",var);
+			else
+				printf("   ");
 
-				if(j<c-2&&m[i][j+1].num>0)
-					printf(" + ");
-				else if(j==c-2)
-					printf(" = ");
-				else
-					printf("  ");
-				var++;
-			}
-			var =97;
-			printf("\n");		
+			if(j<c-2&&m[i][j+1].num>0)
+				printf(" + ");
+			else if(j==c-2)
+				printf(" = ");
+			else
+				printf("  ");
+			var++;
 		}
+		var =97;
+		printf("\n");		
+	}
 }
